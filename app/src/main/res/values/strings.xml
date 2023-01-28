@@ -9,4 +9,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="register_button">Register Now</string>
+    <string name="login_button">Login Now</string>
+    <string name="enter_email_label">Enter your email</string>
+    <string name="enter_password_label">Enter your password</string>
+
 </resources>
