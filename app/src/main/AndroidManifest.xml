@@ -12,6 +12,9 @@
         android:theme="@style/Theme.ActorsProfileManager"
         tools:targetApi="31">
         <activity
+            android:name=".ui.profile.ActorProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.homepage.view.HomePageActivity"
             android:exported="true">
             <intent-filter>

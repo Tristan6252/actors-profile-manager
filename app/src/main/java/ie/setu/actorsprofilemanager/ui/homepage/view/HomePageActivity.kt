@@ -1,6 +1,9 @@
 package ie.setu.actorsprofilemanager.ui.homepage.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -25,7 +28,14 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         actorProfileScrollView = findViewById(R.id.actorProfileScrollView)
         actorProfileScrollViewLayout = findViewById(R.id.actorProfileScrollViewLayout)
 
-
+        actorProfileScrollView?.setOnTouchListener(object: View.OnTouchListener{
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//                when(event?.action) {
+//                    MotionEvent.ACTION_DOWN -> // Do something
+//                }
+                return v?.onTouchEvent(event) ?: true
+            }
+        })
 
         for (item in homepagePresenter!!.loadInitData())  {
         //    val actorName = TextView(this)
@@ -35,6 +45,10 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             thisScrollView.setActorName(item.name)
             thisScrollView.setActorAge(64)
             thisScrollView.setActorGender(item.gender)
+            thisScrollView.setOnClickListener({
+                Log.d("actor name " , item.name)
+                homepagePresenter!!.onActorProfileListItemPress(item, this)
+            })
             actorProfileScrollViewLayout?.addView(thisScrollView)
 
         }
