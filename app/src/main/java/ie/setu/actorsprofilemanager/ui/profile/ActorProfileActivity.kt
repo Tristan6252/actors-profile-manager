@@ -3,6 +3,7 @@ package ie.setu.actorsprofilemanager.ui.profile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.models.Actor
@@ -18,6 +19,7 @@ class ActorProfileActivity : AppCompatActivity() {
     private var actorHeight : TextView? = null
     private var actorDeceasedOrNot : TextView? = null
     private var actorBirthPlaceGoogleMaps : TextView? = null
+    private var profileImageView : ImageView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,5 +44,10 @@ class ActorProfileActivity : AppCompatActivity() {
 
         actorBirthPlaceGoogleMaps = findViewById(R.id.googlemaps)
         actorBirthPlaceGoogleMaps?.text = actor?.birthPlaceGoogleMaps
+
+        profileImageView = findViewById(R.id.actorProfileImageView)
+        if (actor != null) {
+            profileImageView?.setImageDrawable(resources.getDrawable(actor.actorProfileImage))
+        }
     }
 }
