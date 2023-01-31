@@ -23,6 +23,7 @@ class HomePagePresenter(private var homePageView : HomePageViewInterface, privat
 
     override fun onActorProfileListItemPress(actor: Actor, context: Context) {
         val intent = Intent(context, ActorProfileActivity::class.java)
+        intent.putExtra("actor", actor)
        // startActivity(intent)
      context.startActivity(intent)
     }
