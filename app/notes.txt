@@ -1,0 +1,30 @@
+Screens
+1. Register screen
+2. Login screen
+3. Home screen
+4. Add page
+5. Edit page
+6. Profile view page
+
+
+Features
+1. Register screen
+-- sign up using email and password and click the 'register' button
+
+2. Login screen
+-- enter email and password and click the 'login' button
+
+3. Home screen
+-- displays a list of actors belong to that particular user.
+-- Contains buttons to 'add', 'edit', 'delete'
+-- Has a search bar at the top to search for a particular actor's name
+
+4. Add page
+-- Have all the attributes associated with an actor in text-boxes allowing you to fill in each one and hit the 'Add actor' button
+
+5. Edit page
+-- Have all the attributes associated with an actor in text-boxes allowing you to edit the pre-existing values and hit the 'Update actor' button
+
+6-- Profile view page
+-- Displays a page where all the specific attributes are shown
+

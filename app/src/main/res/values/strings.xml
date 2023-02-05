@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Actors Profile Manager</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_button">Register Now</string>
+    <string name="login_button">Login Now</string>
+    <string name="enter_email_label">Enter your email</string>
+    <string name="enter_password_label">Enter your password</string>
+
+    <string name="name_tag"><u>Name:</u></string>
+    <string name="gender_tag"><u>Gender:</u></string>
+    <string name="age_tag"><u>Age:</u></string>
+    <string name="height_tag"><u>Height:</u></string>
+    <string name="deceased_tag"><u>Deceased:</u></string>
 </resources>
