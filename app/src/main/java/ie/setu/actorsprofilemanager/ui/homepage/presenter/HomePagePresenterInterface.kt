@@ -1,5 +1,6 @@
 package ie.setu.actorsprofilemanager.ui.homepage.presenter
 
+import android.content.Context
 import ie.setu.actorsprofilemanager.models.Actor
 
 interface HomePagePresenterInterface {
@@ -9,6 +10,8 @@ interface HomePagePresenterInterface {
     fun onDestroy()
 
     fun loadInitData() : Array<Actor>
+
+    fun onActorProfileListItemPress(actor: Actor, context: Context)
 
 
 }
