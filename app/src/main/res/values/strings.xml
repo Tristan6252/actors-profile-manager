@@ -14,4 +14,9 @@
     <string name="enter_email_label">Enter your email</string>
     <string name="enter_password_label">Enter your password</string>
 
+    <string name="name_tag"><u>Name:</u></string>
+    <string name="gender_tag"><u>Gender:</u></string>
+    <string name="age_tag"><u>Age:</u></string>
+    <string name="height_tag"><u>Height:</u></string>
+    <string name="deceased_tag"><u>Deceased:</u></string>
 </resources>
