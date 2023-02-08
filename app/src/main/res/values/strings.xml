@@ -21,4 +21,11 @@
     <string name="deceased_tag"><u>Deceased:</u></string>
 
     <string name="menu_addActor">Add</string>
+
+    <string name="button_addActor">Add Actor</string>
+    <string name="hint_actorName">Enter Actor Name</string>
+    <string name="hint_actorGender">Enter Actor Gender</string>
+    <string name="hint_actorBirthDate">Enter Actor Birth Date</string>
+    <string name="hint_actorHeight">Enter Actor Height</string>
+    <string name="hint_actorGM">Enter Actor Birth City</string>
 </resources>
