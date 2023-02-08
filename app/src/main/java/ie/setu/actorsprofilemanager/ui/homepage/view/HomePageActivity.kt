@@ -1,13 +1,17 @@
 package ie.setu.actorsprofilemanager.ui.homepage.view
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import ie.setu.actorsprofilemanager.R
+import ie.setu.actorsprofilemanager.ui.addactor.view.AddActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.ScrollItemView
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
@@ -53,6 +57,22 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
         }
 
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_add -> {
+                val intent = Intent(this, AddActorActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
