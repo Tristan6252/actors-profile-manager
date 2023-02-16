@@ -1,4 +1,5 @@
 package ie.setu.actorsprofilemanager.ui.homepage.view
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,13 +11,16 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import com.google.gson.Gson
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.databinding.ActivityHomePageBinding
 import ie.setu.actorsprofilemanager.databinding.ActorProfileActivityBinding
+import ie.setu.actorsprofilemanager.models.Actor
 import ie.setu.actorsprofilemanager.ui.addactor.view.AddActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.ScrollItemView
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
 import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
+import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass.Companion.actors
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
 import java.time.LocalDate
 import java.time.Period
@@ -31,7 +35,16 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
     private lateinit var binding: ActivityHomePageBinding
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        val gson = Gson()
+        val json = gson.toJson(MyClass.actors)
+        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("actors", json)
+            apply()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
@@ -48,6 +61,11 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
                 return v?.onTouchEvent(event) ?: true
             }
         })
+
+        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+        val json = sharedPref.getString("actors", null)
+        val gson = Gson()
+        MyClass.actors = gson.fromJson(json, Array<Actor>::class.java).toMutableList()
 
         for (item in MyClass.actors)  {
             val currentDate = LocalDate.now()
