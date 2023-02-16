@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -21,12 +22,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import ie.setu.actorsprofilemanager.R
+import ie.setu.actorsprofilemanager.models.Actor
+import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
+import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
+import ie.setu.actorsprofilemanager.ui.homepage.view.HomePageActivity
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddActorActivity : AppCompatActivity() {
 
     private val REQUEST_IMAGE_GALLERY = 132
+ //   private val homePageModelObject =
+
+  //  private val homePageActivityObject = HomePageActivity()
 
 
     private lateinit var actorName: EditText
@@ -37,10 +48,16 @@ class AddActorActivity : AppCompatActivity() {
     private lateinit var actorAddButton: Button
     private lateinit var actorDeceasedOrNot: CheckBox
     private lateinit var actorPicture: ImageView
+//    private lateinit var bitmap : Bitmap
+//    private lateinit var actorProfileImageUri : Uri
 
-   // private val Pick_IMAGE_REQUEST = 1
-    private var imageUri: Uri? = null
-    private lateinit var getContent: ActivityResultLauncher<String>
+
+
+    private lateinit var actorBirthDate : LocalDate
+
+    // private val Pick_IMAGE_REQUEST = 1
+  //  private var imageUri: Uri? = null
+   // private lateinit var getContent: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,103 +85,69 @@ class AddActorActivity : AppCompatActivity() {
             val month = calendarInstance.get(Calendar.MONTH)
             var day = calendarInstance.get(Calendar.DAY_OF_MONTH)
 
+
             val datePicker = DatePickerDialog(
                 this,
                 { view, year, monthOfYear, dayOfMonth ->
 
-                    val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-                    actorBD.setText(dat)
+                    val formattedDate = "$dayOfMonth-${monthOfYear + 1}-$year"
+                    val formatter = DateTimeFormatter.ofPattern("d-M-yyyy")
+                     actorBirthDate = LocalDate.parse(formattedDate, formatter)
+                    actorBD.setText(formattedDate)
                 },
                 year, month, day
             )
             datePicker.show()
-        }
-
-
-//        actorPicture.setOnClickListener {
-//            val builder = AlertDialog.Builder(this)
-//            builder.setTitle("Select Image")
-//            builder.setMessage("Choose your option?")
-//            builder.setPositiveButton("Gallery")  { dialog : DialogInterface, which : Int ->
-//                dialog.dismiss()
-//
-//                val intent = Intent(Intent.ACTION_PICK)
-//                intent.type = "image/*"
-//                startActivityForResult(intent, REQUEST_IMAGE_GALLERY)
-//
-//            }
-//            builder.setNegativeButton("Camera")  { dialog : DialogInterface, which : Int ->
-//                dialog.dismiss()
-//            }
-//            val dialog :AlertDialog = builder.create()
-//            dialog.show()
-//        }
 
 
 
-        actorPicture.setOnClickListener {
-            openImageChooser()
-        }
-        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let {
-                imageUri = it
-                actorPicture.setImageURI(imageUri)
-            }
+
         }
 
         actorAddButton.setOnClickListener {
             validateFields()
+
         }
 
-
-
-
-//        val loadImage = registerForActivityResult(ActivityResultContracts.GetContent(),
-//        ActivityResultCallback {
-//            actorPicture.setImageURI(it)
-//        })
-//        actorPicture.setOnClickListener(View.OnClickListener {
-//            loadImage.launch("image/*")
-//        })
-
-
-
-
     }
 
-    private fun openImageChooser() {
-        getContent.launch("image/*")
-    }
+
 
 
 
     private fun validateFields(): Boolean {
         val actorName = actorName.text.toString()
         val actorGender = actorGender.text.toString().toUpperCase().getOrNull(0)
-        //actorBD -- turn this string into a LocalDate object removing the hyphens
+        val actorBD = actorBD.text.toString()
         val actorHeight = actorHeight.text.toString()
         val actorGoogleMapsCity = actorGoogleMaps.text.toString()
         val actorDeceased = actorDeceasedOrNot.isChecked
-        val actorImage = actorPicture.drawable
+    //    val actorImage = actorPicture.drawable
 
 
         if (actorName.isBlank()) {
             Toast.makeText(this, "Please enter an actor name", Toast.LENGTH_SHORT).show()
-          //  R.id.actorName.requestFocus()
+            this.actorName.requestFocus()
             return false
         }
 
 
         if (actorGender == null || (actorGender != 'M' && actorGender != 'F')) {
             Toast.makeText(this, "Please enter M or F for gender", Toast.LENGTH_SHORT).show()
-           // genderEditText.requestFocus()
+            this.actorGender.requestFocus()
+            return false
+        }
+
+        if(actorBD == null || actorBD.isBlank()) {
+            Toast.makeText(this, "Please enter Actor birth date", Toast.LENGTH_SHORT).show()
+            this.actorBD.requestFocus()
             return false
         }
 
 
         if (actorHeight.isBlank()) {
             Toast.makeText(this, "Please enter an actor height", Toast.LENGTH_SHORT).show()
-         //   actorHeight.requestFocus()
+            this.actorHeight.requestFocus()
             return false
         }
 
@@ -172,107 +155,33 @@ class AddActorActivity : AppCompatActivity() {
             actorHeight.toDouble()
         } catch (e: NumberFormatException) {
             Toast.makeText(this, "Please enter a valid height", Toast.LENGTH_SHORT).show()
-         //   actorHeight.requestFocus()
+            this.actorHeight.requestFocus()
             return false
         }
 
         if(actorGoogleMapsCity.isBlank()) {
             Toast.makeText(this, "Please enter an actor Google Maps City", Toast.LENGTH_SHORT).show()
+            this.actorGoogleMaps.requestFocus()
             return false
         }
 
-        if (actorImage == null) {
-            Toast.makeText(this, "Please select an actor image", Toast.LENGTH_SHORT).show()
-            return false
-        }
 
-        if (actorDeceased) {
-            // actor is deceased
-        } else {
-            // actor is alive
-        }
 
+
+        val actor1 = Actor(actorName, actorGender, actorBirthDate, height, actorDeceased, actorGoogleMapsCity)
+        MyClass.actors.add(actor1)
+        Toast.makeText(this, "$actorName has been successfully added!", Toast.LENGTH_SHORT).show()
         return true
+    }
+
+    private fun getBitmapFromUri(uri: Uri): Bitmap {
+        val inputStream = contentResolver.openInputStream(uri)
+        return BitmapFactory.decodeStream(inputStream)
     }
 
 
 
 
-
-//    private fun openFileChooser() {
-//        val intent = Intent()
-//        intent.type = "image/*"
-//        intent.action = Intent.ACTION_GET_CONTENT
-//        startActivityForResult(intent, Pick_IMAGE_REQUEST)
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == Pick_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
-//            && data != null && data.data != null
-//        ) {
-//            imageUri = data.data
-//            actorPicture.setImageURI(imageUri)
-//        }
-//    }
-
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if(resultCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
-//            actorPicture.setImageURI(data.data)
-//        } else {
-//            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
-//        }
-//
-//    }
-
-
-
-
-
-
-
-
-
-//    fun pickPhoto(view: View) {
-//        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-//        } else {
-//            val phonePhotoGalleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//            startActivityForResult(phonePhotoGalleryIntent, 2)
-//        }
-//    }
-
-//   override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//
-//
-//            if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                val photoGalleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//                startActivityForResult(photoGalleryIntent, 2)
-//            }
-//
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//
-//
-//        if(resultCode == Activity.RESULT_OK && data != null) {
-//            pickedPhoto = data.data!!
-//            if(pickedPhoto != null) {
-//                val source = ImageDecoder.createSource(this.contentResolver, pickedPhoto!!)
-//                pickedBitMap = ImageDecoder.decodeBitmap(source)
-//                actorPicture.setImageBitmap(pickedBitMap)
-//            }
-//        }
-//        super.onActivityResult(requestCode, resultCode, data)
-//    }
 
 
 

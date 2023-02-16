@@ -11,10 +11,15 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import ie.setu.actorsprofilemanager.R
+import ie.setu.actorsprofilemanager.databinding.ActivityHomePageBinding
+import ie.setu.actorsprofilemanager.databinding.ActorProfileActivityBinding
 import ie.setu.actorsprofilemanager.ui.addactor.view.AddActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.ScrollItemView
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
+import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
+import java.time.LocalDate
+import java.time.Period
 
 class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
@@ -23,6 +28,9 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
     private var actorProfileScrollView : ScrollView? = null
 
     private var actorProfileScrollViewLayout : LinearLayout? = null
+
+    private lateinit var binding: ActivityHomePageBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +49,16 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             }
         })
 
-        for (item in homepagePresenter!!.loadInitData())  {
+        for (item in MyClass.actors)  {
+            val currentDate = LocalDate.now()
+            val period = Period.between(item.birthDate, currentDate)
+            val years = period.years
         //    val actorName = TextView(this)
          //   actorName.text = item.name
           //  actorProfileScrollViewLayout?.addView(actorName)
             var thisScrollView = ScrollItemView(this)
             thisScrollView.setActorName(item.name)
-            thisScrollView.setActorAge(64)
+            thisScrollView.setActorAge(years) //64
             thisScrollView.setActorGender(item.gender)
             thisScrollView.setOnClickListener({
                 Log.d("actor name " , item.name)

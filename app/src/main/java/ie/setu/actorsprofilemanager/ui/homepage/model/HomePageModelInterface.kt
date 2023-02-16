@@ -4,6 +4,6 @@ import ie.setu.actorsprofilemanager.models.Actor
 
 interface HomePageModelInterface {
 
-    fun getActors() : Array<Actor>
-
+    fun getActors() : MutableList<Actor>
+    fun addActor(actor: Actor)
 }

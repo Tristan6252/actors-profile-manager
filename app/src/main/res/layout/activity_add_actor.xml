@@ -123,16 +123,9 @@
 
                 <ImageView
                     android:id="@+id/actorProfilePicture"
-                    android:layout_width="wrap_content"
-                    android:layout_height="229dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp"
-                    android:gravity="center"
-                    android:maxLength="25"
-                    android:maxLines="1"
-                    android:padding="200dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                      />
-
 
                 <Button
                     android:id="@+id/addActorButton"

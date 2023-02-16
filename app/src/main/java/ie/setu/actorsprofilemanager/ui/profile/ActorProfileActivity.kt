@@ -1,6 +1,7 @@
 package ie.setu.actorsprofilemanager.ui.profile
 
 import android.location.Geocoder
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -62,10 +63,7 @@ class ActorProfileActivity : AppCompatActivity(), OnMapReadyCallback, OnMapsSdkI
 //        actorBirthPlaceGoogleMaps = findViewById(R.id.googlemaps)
 //        actorBirthPlaceGoogleMaps?.text = actor?.birthPlaceGoogleMaps
 
-        profileImageView = findViewById(R.id.actorProfileImageView)
-        if (actor != null) {
-            profileImageView?.setImageDrawable(resources.getDrawable(actor.actorProfileImage))
-        }
+
 
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
