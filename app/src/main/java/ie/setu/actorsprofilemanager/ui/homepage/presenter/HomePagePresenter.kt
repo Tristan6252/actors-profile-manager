@@ -17,7 +17,7 @@ class HomePagePresenter(private var homePageView : HomePageViewInterface, privat
 
     }
 
-    override fun loadInitData(): Array<Actor> {
+    override fun loadInitData(): MutableList<Actor> {
         return model.getActors()
     }
 
