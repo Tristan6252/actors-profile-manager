@@ -9,7 +9,7 @@ interface HomePagePresenterInterface {
 
     fun onDestroy()
 
-    fun loadInitData() : Array<Actor>
+    fun loadInitData() : MutableList<Actor>
 
     fun onActorProfileListItemPress(actor: Actor, context: Context)
 
