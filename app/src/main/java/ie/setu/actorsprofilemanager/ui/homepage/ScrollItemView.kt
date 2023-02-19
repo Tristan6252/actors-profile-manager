@@ -13,10 +13,10 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
     private var actorGender: TextView? = null
 
     init {
-        inflate(context, R.layout.actor_profile_list_item, this)
-        actorName = findViewById(R.id.actor_name)
-        actorAge = findViewById(R.id.actor_age)
-        actorGender = findViewById(R.id.actor_gender)
+        inflate(context, R.layout.card_actor, this)
+        actorName = findViewById(R.id.actorNameCard)
+        actorAge = findViewById(R.id.actorAgeCard)
+        actorGender = findViewById(R.id.actorGenderCard)
     }
 
     fun setActorName(actorName: String) {
