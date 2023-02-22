@@ -90,10 +90,8 @@ class AddActorActivity : AppCompatActivity() {
                 this,
                 { view, year, monthOfYear, dayOfMonth ->
 
-                    val formattedDate = "$dayOfMonth-${monthOfYear + 1}-$year"
-                    val formatter = DateTimeFormatter.ofPattern("d-M-yyyy")
-                     actorBirthDate = LocalDate.parse(formattedDate, formatter)
-                    actorBD.setText(formattedDate)
+                     actorBirthDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth)
+                    actorBD.setText(actorBirthDate.toString())
                 },
                 year, month, day
             )
@@ -168,7 +166,7 @@ class AddActorActivity : AppCompatActivity() {
 
 
 
-        val actor1 = Actor(actorName, actorGender, actorBirthDate, height, actorDeceased, actorGoogleMapsCity)
+        val actor1 = Actor(actorName, actorGender, actorBirthDate.toString(), height, actorDeceased, actorGoogleMapsCity)
         MyClass.actors.add(actor1)
         Toast.makeText(this, "$actorName has been successfully added!", Toast.LENGTH_SHORT).show()
         return true
