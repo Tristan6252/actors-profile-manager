@@ -37,8 +37,18 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
     private lateinit  var adapter : ArrayAdapter<Actor>
 
-    override fun onDestroy() {
-        super.onDestroy()
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        val gson = Gson()
+//        val json = gson.toJson(MyClass.actors)
+//        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+//        with(sharedPref.edit()) {
+//            putString("actors", json)
+//            apply()
+//        }
+//    }
+
+    fun saveActors() {
         val gson = Gson()
         val json = gson.toJson(MyClass.actors)
         val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
@@ -47,6 +57,8 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             apply()
         }
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
@@ -134,6 +146,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
                 actorProfileScrollViewLayout?.removeAllViews()
                 repopulateScrollView()
                 actorProfileScrollView?.requestLayout()
+                saveActors()
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {dialog, id ->
                 // Does nothing when they hit the cancel button!
