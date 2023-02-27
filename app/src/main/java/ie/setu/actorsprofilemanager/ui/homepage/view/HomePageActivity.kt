@@ -3,7 +3,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,16 +10,15 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.databinding.ActivityHomePageBinding
-import ie.setu.actorsprofilemanager.databinding.ActorProfileActivityBinding
 import ie.setu.actorsprofilemanager.models.Actor
 import ie.setu.actorsprofilemanager.ui.addactor.view.AddActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.ScrollItemView
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
 import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
-import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass.Companion.actors
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
 import java.time.LocalDate
 import java.time.Period
@@ -85,6 +83,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
     }
 
     fun repopulateScrollView() {
+        println("Actor array size: " + MyClass.actors.size)
         if(!MyClass.actors.isEmpty()) {
             for (item in MyClass.actors) {
                 val currentDate = LocalDate.now()
