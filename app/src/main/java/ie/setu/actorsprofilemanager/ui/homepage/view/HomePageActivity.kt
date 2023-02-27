@@ -3,7 +3,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,16 +10,15 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.databinding.ActivityHomePageBinding
-import ie.setu.actorsprofilemanager.databinding.ActorProfileActivityBinding
 import ie.setu.actorsprofilemanager.models.Actor
 import ie.setu.actorsprofilemanager.ui.addactor.view.AddActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.ScrollItemView
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
 import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
-import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass.Companion.actors
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
 import java.time.LocalDate
 import java.time.Period
@@ -37,8 +35,18 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
     private lateinit  var adapter : ArrayAdapter<Actor>
 
-    override fun onDestroy() {
-        super.onDestroy()
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        val gson = Gson()
+//        val json = gson.toJson(MyClass.actors)
+//        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+//        with(sharedPref.edit()) {
+//            putString("actors", json)
+//            apply()
+//        }
+//    }
+
+    fun saveActors() {
         val gson = Gson()
         val json = gson.toJson(MyClass.actors)
         val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
@@ -47,6 +55,8 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             apply()
         }
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
@@ -73,6 +83,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
     }
 
     fun repopulateScrollView() {
+        println("Actor array size: " + MyClass.actors.size)
         if(!MyClass.actors.isEmpty()) {
             for (item in MyClass.actors) {
                 val currentDate = LocalDate.now()
@@ -134,6 +145,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
                 actorProfileScrollViewLayout?.removeAllViews()
                 repopulateScrollView()
                 actorProfileScrollView?.requestLayout()
+                saveActors()
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {dialog, id ->
                 // Does nothing when they hit the cancel button!
