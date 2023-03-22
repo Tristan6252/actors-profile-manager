@@ -34,5 +34,13 @@
             android:layout_below="@id/actorAgeCard"
             tools:text="Gender" />
 
+        <ImageView
+            android:id="@+id/deleteIndividualActorIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_delete_individual" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
