@@ -93,6 +93,12 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
                 //   actorName.text = item.name
                 //  actorProfileScrollViewLayout?.addView(actorName)
                 var thisScrollView = ScrollItemView(this)
+                thisScrollView.setOnTrashIconPress({
+                    actorProfileScrollViewLayout?.removeAllViews()
+                    repopulateScrollView()
+                    actorProfileScrollView?.requestLayout()
+                    saveActors()
+                })
                 thisScrollView.setActorName(item.name)
                 thisScrollView.setActorAge(years) //64
                 thisScrollView.setActorGender(item.gender)
@@ -123,6 +129,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 
 
