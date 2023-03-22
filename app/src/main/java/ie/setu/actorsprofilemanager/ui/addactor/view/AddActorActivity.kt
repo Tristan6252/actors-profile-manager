@@ -104,6 +104,19 @@ class AddActorActivity : AppCompatActivity() {
 
         }
 
+
+        val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                actorPicture.setImageURI(uri)
+            }
+        }
+
+        actorPicture.setOnClickListener {
+            getContent.launch("image/*")
+        }
+
+
+
         actorAddButton.setOnClickListener {
             validateFields()
 
@@ -122,7 +135,7 @@ class AddActorActivity : AppCompatActivity() {
         val actorHeight = actorHeight.text.toString()
         val actorGoogleMapsCity = actorGoogleMaps.text.toString()
         val actorDeceased = actorDeceasedOrNot.isChecked
-    //    val actorImage = actorPicture.drawable
+        val actorImage = actorPicture.drawable
 
 
         if (actorName.isBlank()) {
@@ -164,8 +177,6 @@ class AddActorActivity : AppCompatActivity() {
             this.actorGoogleMaps.requestFocus()
             return false
         }
-
-
 
 
         val actor1 = Actor(actorName, actorGender, actorBirthDate, height, actorDeceased, actorGoogleMapsCity)
