@@ -178,7 +178,10 @@ class AddActorActivity : AppCompatActivity() {
             return false
         }
 
-
+        if(actorImage == null) {
+            Toast.makeText(this, "Please choose an actor profile picture", Toast.LENGTH_SHORT).show()
+            return false
+        }
 
         val actor1 = Actor(actorName, actorGender, actorBirthDate.toString(), height, actorDeceased, actorGoogleMapsCity)
 
