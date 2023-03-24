@@ -8,6 +8,9 @@
         android:title="@string/menu_addActor"
         app:showAsAction="always" />
 
-
+     <item android:id="@+id/nav_delete"
+         android:icon="@drawable/ic_delete"
+         android:title="Delete"
+         app:showAsAction="ifRoom"/>
 
 </menu>

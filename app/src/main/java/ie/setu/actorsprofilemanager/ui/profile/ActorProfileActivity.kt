@@ -50,7 +50,7 @@ class ActorProfileActivity : AppCompatActivity(), OnMapReadyCallback, OnMapsSdkI
         actorGender?.text = actor?.gender.toString()
 
         val today = LocalDate.now()
-        val yearsBetween = ChronoUnit.YEARS.between(actor?.birthDate, today)
+        val yearsBetween = ChronoUnit.YEARS.between(LocalDate.parse(actor?.birthDate), today)
         actorBirthDate = findViewById(R.id.birthDate)
         actorBirthDate?.text = yearsBetween.toString()
 

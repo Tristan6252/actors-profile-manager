@@ -4,6 +4,7 @@ import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.models.Actor
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
@@ -90,10 +92,8 @@ class AddActorActivity : AppCompatActivity() {
                 this,
                 { view, year, monthOfYear, dayOfMonth ->
 
-                    val formattedDate = "$dayOfMonth-${monthOfYear + 1}-$year"
-                    val formatter = DateTimeFormatter.ofPattern("d-M-yyyy")
-                     actorBirthDate = LocalDate.parse(formattedDate, formatter)
-                    actorBD.setText(formattedDate)
+                     actorBirthDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth)
+                    actorBD.setText(actorBirthDate.toString())
                 },
                 year, month, day
             )
@@ -179,8 +179,18 @@ class AddActorActivity : AppCompatActivity() {
         }
 
 
-        val actor1 = Actor(actorName, actorGender, actorBirthDate, height, actorDeceased, actorGoogleMapsCity)
+
+        val actor1 = Actor(actorName, actorGender, actorBirthDate.toString(), height, actorDeceased, actorGoogleMapsCity)
+
         MyClass.actors.add(actor1)
+        val gson = Gson()
+        val json = gson.toJson(MyClass.actors)
+        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+       with(sharedPref.edit()) {
+            putString("actors", json)
+            apply()
+        }
+        println("Actors array size: " + MyClass.actors.size)
         Toast.makeText(this, "$actorName has been successfully added!", Toast.LENGTH_SHORT).show()
         return true
     }
