@@ -154,6 +154,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         alertMessage.setMessage("Are you sure you wish to remove all actors?")
             .setPositiveButton("Confirm", DialogInterface.OnClickListener { dialog, id ->
                 MyClass.actors.clear()
+                dbmanagerObject.deleteAllActors {  }
                // adapter.notifyDataSetChanged()
                 actorProfileScrollViewLayout?.removeAllViews()
                 repopulateScrollView()

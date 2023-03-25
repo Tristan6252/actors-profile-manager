@@ -39,4 +39,15 @@ class dbmanager {
             database.child("actors").child(key).setValue(actor1).addOnSuccessListener {println("success")} .addOnFailureListener { println("failure") }
         }
     }
+
+    fun deleteAllActors(callback: () -> Unit) {
+        database.child("actors").removeValue()
+            .addOnSuccessListener {
+                MyClass.actors.clear()
+                callback()
+            }
+            .addOnFailureListener { exception ->
+
+            }
+    }
 }
