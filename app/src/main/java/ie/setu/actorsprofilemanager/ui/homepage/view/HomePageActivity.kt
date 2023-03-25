@@ -22,6 +22,7 @@ import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
 import java.time.LocalDate
 import java.time.Period
+import dbmanager
 
 class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
@@ -34,6 +35,8 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
     private lateinit var binding: ActivityHomePageBinding
 
     private lateinit  var adapter : ArrayAdapter<Actor>
+
+    private var dbmanagerObject = dbmanager()
 
 //    override fun onDestroy() {
 //        super.onDestroy()
@@ -61,6 +64,8 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+
+
         homepagePresenter = HomePagePresenter(this, HomePageModel())
         actorProfileScrollView = findViewById(R.id.actorProfileScrollView)
         actorProfileScrollViewLayout = findViewById(R.id.actorProfileScrollViewLayout)
@@ -77,9 +82,9 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
             val json = sharedPref.getString("actors", null)
             val gson = Gson()
-            MyClass.actors = gson.fromJson(json, Array<Actor>::class.java).toMutableList()
-        repopulateScrollView()
-
+//            MyClass.actors = gson.fromJson(json, Array<Actor>::class.java).toMutableList()
+        //repopulateScrollView()
+        dbmanagerObject.getActors(::repopulateScrollView)
     }
 
     fun repopulateScrollView() {
@@ -87,6 +92,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         if(!MyClass.actors.isEmpty()) {
             for (item in MyClass.actors) {
                 val currentDate = LocalDate.now()
+                println("ITEM BIRTHDATE: " + item)
                 val period = Period.between(LocalDate.parse(item.birthDate), currentDate)
                 val years = period.years
                 //    val actorName = TextView(this)

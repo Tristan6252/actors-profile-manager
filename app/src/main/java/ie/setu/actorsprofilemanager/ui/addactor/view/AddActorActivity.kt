@@ -25,11 +25,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import dbmanager
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.models.Actor
 import ie.setu.actorsprofilemanager.ui.homepage.model.HomePageModel
 import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
 import ie.setu.actorsprofilemanager.ui.homepage.view.HomePageActivity
+import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -50,6 +52,7 @@ class AddActorActivity : AppCompatActivity() {
     private lateinit var actorAddButton: Button
     private lateinit var actorDeceasedOrNot: CheckBox
     private lateinit var actorPicture: ImageView
+    private lateinit var actorPictureBitMap: Bitmap
 //    private lateinit var bitmap : Bitmap
 //    private lateinit var actorProfileImageUri : Uri
 
@@ -57,6 +60,7 @@ class AddActorActivity : AppCompatActivity() {
 
     private lateinit var actorBirthDate : LocalDate
 
+    private var dbmanagerObject = dbmanager()
     // private val Pick_IMAGE_REQUEST = 1
   //  private var imageUri: Uri? = null
    // private lateinit var getContent: ActivityResultLauncher<String>
@@ -107,6 +111,7 @@ class AddActorActivity : AppCompatActivity() {
 
         val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
+                actorPictureBitMap = getBitmapFromUri(uri)
                 actorPicture.setImageURI(uri)
             }
         }
@@ -182,17 +187,20 @@ class AddActorActivity : AppCompatActivity() {
             Toast.makeText(this, "Please choose an actor profile picture", Toast.LENGTH_SHORT).show()
             return false
         }
-
-        val actor1 = Actor(actorName, actorGender, actorBirthDate.toString(), height, actorDeceased, actorGoogleMapsCity)
+        val baos = ByteArrayOutputStream()
+        actorPictureBitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val actor1 = Actor(actorName, actorGender.toString(), actorBirthDate.toString(), height, actorDeceased, actorGoogleMapsCity, Base64.getEncoder().encodeToString(baos.toByteArray()))
 
         MyClass.actors.add(actor1)
-        val gson = Gson()
-        val json = gson.toJson(MyClass.actors)
-        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
-       with(sharedPref.edit()) {
-            putString("actors", json)
-            apply()
-        }
+        dbmanagerObject.addActor(actor1) //Firebase function
+//        val gson = Gson()
+//        val json = gson.toJson(MyClass.actors)
+//        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+//       with(sharedPref.edit()) {
+//            putString("actors", json)
+//            apply()
+//        }
+
         println("Actors array size: " + MyClass.actors.size)
         Toast.makeText(this, "$actorName has been successfully added!", Toast.LENGTH_SHORT).show()
         return true

@@ -50,7 +50,7 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
         this.actorAge?.text = actorAge.toString()
     }
 
-    fun setActorGender(actorGender: Char) {
+    fun setActorGender(actorGender: String) {
         this.actorGender?.text = actorGender.toString()
     }
 
