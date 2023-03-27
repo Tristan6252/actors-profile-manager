@@ -50,4 +50,22 @@ class dbmanager {
 
             }
     }
+
+    fun deleteIndividualActor(actorName: String) {
+        val actorRef = database.child("actors").orderByChild("name").equalTo(actorName)
+
+        actorRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (actorSnapshot in snapshot.children) {
+                    actorSnapshot.ref.removeValue()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
+    }
 }

@@ -6,8 +6,11 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import dbmanager
 import ie.setu.actorsprofilemanager.R
 import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
+import ie.setu.actorsprofilemanager.ui.homepage.view.HomePageActivity
+import java.lang.reflect.Executable
 
 class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(contextOfTypeContext, attrs, defStyle) {
 
@@ -16,6 +19,11 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
     private var actorGender: TextView? = null
     private var actorDeleteIcon: ImageView? = null
     private lateinit var trashPress: () -> Unit?
+
+    private var dbmanagerObject = dbmanager()
+
+    private lateinit var deleteIndividualActorPress : HomePageActivity.deleteIndividualActorCallBackInterface
+
 
     init {
         inflate(context, R.layout.card_actor, this)
@@ -34,7 +42,9 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
                 println("Actor's array size after delete individual actor: " + MyClass.actors.size)
                 println("Actor Name: " + actorName)
                 println(actorToDelete)
+            //    dbmanagerObject.deleteIndividualActor(actorName.toString(), ::repopulateScrollView)
                 trashPress()
+                deleteIndividualActorPress.delete(this.actorName?.text.toString())
             }
             alertMessage.setNegativeButton("Cancel") { _, _ -> }
             val dialog = alertMessage.create()
@@ -56,6 +66,15 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
 
     fun setOnTrashIconPress(trashPress:() -> Unit) {
         this.trashPress = trashPress
+    }
+
+//    interface deleteIndividualActorCallBackInterface {
+//        fun delete(actorName: String)
+//    }
+
+    fun setOnDeleteIndividualActorPress(callback: HomePageActivity.deleteIndividualActorCallBackInterface) {
+        //callback.delete(this.actorName?.text.toString())
+        this.deleteIndividualActorPress = callback
     }
 
 

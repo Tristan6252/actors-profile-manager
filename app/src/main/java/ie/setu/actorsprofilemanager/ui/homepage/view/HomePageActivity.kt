@@ -87,6 +87,10 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         dbmanagerObject.getActors(::repopulateScrollView)
     }
 
+    interface deleteIndividualActorCallBackInterface {
+        fun delete(actorName: String)
+    }
+
     fun repopulateScrollView() {
         println("Actor array size: " + MyClass.actors.size)
         if(!MyClass.actors.isEmpty()) {
@@ -99,6 +103,18 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
                 //   actorName.text = item.name
                 //  actorProfileScrollViewLayout?.addView(actorName)
                 var thisScrollView = ScrollItemView(this)
+
+
+
+
+                val callback = object : deleteIndividualActorCallBackInterface   {
+
+                    override fun delete(actorName: String) {
+                        dbmanagerObject.deleteIndividualActor(actorName)
+                    }
+                }
+
+                thisScrollView.setOnDeleteIndividualActorPress(callback)
                 thisScrollView.setOnTrashIconPress({
                     actorProfileScrollViewLayout?.removeAllViews()
                     repopulateScrollView()
