@@ -38,6 +38,8 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
     private var dbmanagerObject = dbmanager()
 
+    private lateinit var actorListView : ListView
+
 //    override fun onDestroy() {
 //        super.onDestroy()
 //        val gson = Gson()
@@ -49,15 +51,15 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 //        }
 //    }
 
-    fun saveActors() {
-        val gson = Gson()
-        val json = gson.toJson(MyClass.actors)
-        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("actors", json)
-            apply()
-        }
-    }
+//    fun saveActors() {
+//        val gson = Gson()
+//        val json = gson.toJson(MyClass.actors)
+//        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+//        with(sharedPref.edit()) {
+//            putString("actors", json)
+//            apply()
+//        }
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +71,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         homepagePresenter = HomePagePresenter(this, HomePageModel())
         actorProfileScrollView = findViewById(R.id.actorProfileScrollView)
         actorProfileScrollViewLayout = findViewById(R.id.actorProfileScrollViewLayout)
+        actorListView = findViewById(R.id.actorListView)
 
         actorProfileScrollView?.setOnTouchListener(object: View.OnTouchListener{
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -79,16 +82,13 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             }
         })
         adapter = ArrayAdapter(this, R.layout.activity_home_page, MyClass.actors)
-            val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
-            val json = sharedPref.getString("actors", null)
-            val gson = Gson()
-//            MyClass.actors = gson.fromJson(json, Array<Actor>::class.java).toMutableList()
-        //repopulateScrollView()
+        actorListView.adapter = adapter
         dbmanagerObject.getActors(::repopulateScrollView)
+        repopulateScrollView()
     }
 
     interface deleteIndividualActorCallBackInterface {
-        fun delete(actorName: String)
+        fun delete(actorName: String, callback: () -> Unit)
     }
 
     fun repopulateScrollView() {
@@ -109,17 +109,23 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
                 val callback = object : deleteIndividualActorCallBackInterface   {
 
-                    override fun delete(actorName: String) {
-                        dbmanagerObject.deleteIndividualActor(actorName)
+                    override fun delete(actorName: String, callback: () -> Unit) {
+                        dbmanagerObject.deleteIndividualActor(actorName, callback)
                     }
                 }
+
+
 
                 thisScrollView.setOnDeleteIndividualActorPress(callback)
                 thisScrollView.setOnTrashIconPress({
                     actorProfileScrollViewLayout?.removeAllViews()
-                    repopulateScrollView()
-                    actorProfileScrollView?.requestLayout()
-                    saveActors()
+//                    dbmanagerObject.getActors {
+//                        repopulateScrollView()
+//                        actorProfileScrollView?.requestLayout() }
+                     //   repopulateScrollView()
+                        actorProfileScrollView?.requestLayout()
+
+                 //   saveActors()
                 })
                 thisScrollView.setActorName(item.name)
                 thisScrollView.setActorAge(years) //64
@@ -175,7 +181,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
                 actorProfileScrollViewLayout?.removeAllViews()
                 repopulateScrollView()
                 actorProfileScrollView?.requestLayout()
-                saveActors()
+                //saveActors()
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {dialog, id ->
                 // Does nothing when they hit the cancel button!

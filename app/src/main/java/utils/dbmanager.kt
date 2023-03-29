@@ -6,12 +6,13 @@ import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
 class dbmanager {
     val database = FirebaseDatabase.getInstance("https://actors-profile-manager-default-rtdb.europe-west1.firebasedatabase.app/").reference
 
-    fun getActors(callback:() -> Unit) {
+    fun getActors(callback: () -> Unit) {
         MyClass.actors.clear()
         val actorRef = database.child("actors")
 
         actorRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                MyClass.actors.clear()
                 println("This is the snapshot: " + snapshot)
 
                // println("This is the post print statement: " + post)
@@ -51,7 +52,7 @@ class dbmanager {
             }
     }
 
-    fun deleteIndividualActor(actorName: String) {
+    fun deleteIndividualActor(actorName: String, callback: () -> Unit) {
         val actorRef = database.child("actors").orderByChild("name").equalTo(actorName)
 
         actorRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -59,10 +60,11 @@ class dbmanager {
                 for (actorSnapshot in snapshot.children) {
                     actorSnapshot.ref.removeValue()
                 }
+                callback()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                callback()
             }
         })
 

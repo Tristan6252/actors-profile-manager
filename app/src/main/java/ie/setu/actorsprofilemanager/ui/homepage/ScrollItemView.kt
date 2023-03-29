@@ -43,8 +43,10 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
                 println("Actor Name: " + actorName)
                 println(actorToDelete)
             //    dbmanagerObject.deleteIndividualActor(actorName.toString(), ::repopulateScrollView)
-                trashPress()
-                deleteIndividualActorPress.delete(this.actorName?.text.toString())
+                deleteIndividualActorPress.delete(this.actorName?.text.toString(), {
+                    trashPress()
+                })
+
             }
             alertMessage.setNegativeButton("Cancel") { _, _ -> }
             val dialog = alertMessage.create()
