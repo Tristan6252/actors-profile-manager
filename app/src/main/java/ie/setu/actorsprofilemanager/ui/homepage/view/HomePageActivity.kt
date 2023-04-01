@@ -22,6 +22,7 @@ import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
 import ie.setu.actorsprofilemanager.ui.homepage.presenter.HomePagePresenter
 import java.time.LocalDate
 import java.time.Period
+import dbmanager
 
 class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
@@ -35,6 +36,10 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
     private lateinit  var adapter : ArrayAdapter<Actor>
 
+    private var dbmanagerObject = dbmanager()
+
+    private lateinit var actorListView : ListView
+
 //    override fun onDestroy() {
 //        super.onDestroy()
 //        val gson = Gson()
@@ -46,24 +51,27 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 //        }
 //    }
 
-    fun saveActors() {
-        val gson = Gson()
-        val json = gson.toJson(MyClass.actors)
-        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("actors", json)
-            apply()
-        }
-    }
+//    fun saveActors() {
+//        val gson = Gson()
+//        val json = gson.toJson(MyClass.actors)
+//        val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
+//        with(sharedPref.edit()) {
+//            putString("actors", json)
+//            apply()
+//        }
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+
+
         homepagePresenter = HomePagePresenter(this, HomePageModel())
         actorProfileScrollView = findViewById(R.id.actorProfileScrollView)
         actorProfileScrollViewLayout = findViewById(R.id.actorProfileScrollViewLayout)
+        actorListView = findViewById(R.id.actorListView)
 
         actorProfileScrollView?.setOnTouchListener(object: View.OnTouchListener{
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -74,12 +82,13 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
             }
         })
         adapter = ArrayAdapter(this, R.layout.activity_home_page, MyClass.actors)
-            val sharedPref = getSharedPreferences("actors", Context.MODE_PRIVATE)
-            val json = sharedPref.getString("actors", null)
-            val gson = Gson()
-            MyClass.actors = gson.fromJson(json, Array<Actor>::class.java).toMutableList()
+        actorListView.adapter = adapter
+        dbmanagerObject.getActors(::repopulateScrollView)
         repopulateScrollView()
+    }
 
+    interface deleteIndividualActorCallBackInterface {
+        fun delete(actorName: String, callback: () -> Unit)
     }
 
     fun repopulateScrollView() {
@@ -87,12 +96,37 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         if(!MyClass.actors.isEmpty()) {
             for (item in MyClass.actors) {
                 val currentDate = LocalDate.now()
+                println("ITEM BIRTHDATE: " + item)
                 val period = Period.between(LocalDate.parse(item.birthDate), currentDate)
                 val years = period.years
                 //    val actorName = TextView(this)
                 //   actorName.text = item.name
                 //  actorProfileScrollViewLayout?.addView(actorName)
                 var thisScrollView = ScrollItemView(this)
+
+
+
+
+                val callback = object : deleteIndividualActorCallBackInterface   {
+
+                    override fun delete(actorName: String, callback: () -> Unit) {
+                        dbmanagerObject.deleteIndividualActor(actorName, callback)
+                    }
+                }
+
+
+
+                thisScrollView.setOnDeleteIndividualActorPress(callback)
+                thisScrollView.setOnTrashIconPress({
+                    actorProfileScrollViewLayout?.removeAllViews()
+//                    dbmanagerObject.getActors {
+//                        repopulateScrollView()
+//                        actorProfileScrollView?.requestLayout() }
+                     //   repopulateScrollView()
+                        actorProfileScrollView?.requestLayout()
+
+                 //   saveActors()
+                })
                 thisScrollView.setActorName(item.name)
                 thisScrollView.setActorAge(years) //64
                 thisScrollView.setActorGender(item.gender)
@@ -126,6 +160,7 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
 
 
 
+
     override fun onActorProfilePress() {
         TODO("Not yet implemented")
     }
@@ -141,11 +176,12 @@ class HomePageActivity : AppCompatActivity(), HomePageViewInterface {
         alertMessage.setMessage("Are you sure you wish to remove all actors?")
             .setPositiveButton("Confirm", DialogInterface.OnClickListener { dialog, id ->
                 MyClass.actors.clear()
+                dbmanagerObject.deleteAllActors {  }
                // adapter.notifyDataSetChanged()
                 actorProfileScrollViewLayout?.removeAllViews()
                 repopulateScrollView()
                 actorProfileScrollView?.requestLayout()
-                saveActors()
+                //saveActors()
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {dialog, id ->
                 // Does nothing when they hit the cancel button!

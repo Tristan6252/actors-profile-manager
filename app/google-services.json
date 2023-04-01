@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "695437070797",
+    "project_id": "actors-profile-manager",
+    "storage_bucket": "actors-profile-manager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695437070797:android:d72d342bddafafb2f87484",
+        "android_client_info": {
+          "package_name": "ie.setu.actorsprofilemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695437070797-a1l50rkqp563jn8nfpj8ol3pk1re5dj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaRnkWxdE_W3-nZJQs_qnbjBhPTllo28g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695437070797-a1l50rkqp563jn8nfpj8ol3pk1re5dj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
