@@ -2,13 +2,17 @@ package ie.setu.actorsprofilemanager.ui.homepage
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import dbmanager
 import ie.setu.actorsprofilemanager.R
+import ie.setu.actorsprofilemanager.ui.addactor.view.AddActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.model.MyClass
+import ie.setu.actorsprofilemanager.ui.homepage.view.EditActorActivity
 import ie.setu.actorsprofilemanager.ui.homepage.view.HomePageActivity
 import java.lang.reflect.Executable
 
@@ -18,12 +22,21 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
     private var actorAge: TextView? = null
     private var actorGender: TextView? = null
     private var actorDeleteIcon: ImageView? = null
+
+    private var actorEditIcon: ImageView? = null
+
     private lateinit var trashPress: () -> Unit?
 
     private var dbmanagerObject = dbmanager()
 
     private lateinit var deleteIndividualActorPress : HomePageActivity.deleteIndividualActorCallBackInterface
-
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        actorEditIcon?.setOnClickListener {
+            val intent = Intent(context, EditActorActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     init {
         inflate(context, R.layout.card_actor, this)
@@ -31,6 +44,13 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
         actorAge = findViewById(R.id.actorAgeCard)
         actorGender = findViewById(R.id.actorGenderCard)
         actorDeleteIcon = findViewById(R.id.deleteIndividualActorIcon)
+
+        actorEditIcon = findViewById(R.id.editIndividualActorIcon)
+//        actorEditIcon?.setOnClickListener {
+//            val intent = Intent(context, EditActorActivity::class.java)
+//            context.startActivity(intent)
+//        }
+
         actorDeleteIcon?.setOnClickListener {
             val alertMessage = AlertDialog.Builder(context)
             alertMessage.setTitle("Delete Actor")
