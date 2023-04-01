@@ -1,9 +1,11 @@
 package ie.setu.actorsprofilemanager.ui.profile
 
+import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -62,8 +64,11 @@ class ActorProfileActivity : AppCompatActivity(), OnMapReadyCallback, OnMapsSdkI
 
 //        actorBirthPlaceGoogleMaps = findViewById(R.id.googlemaps)
 //        actorBirthPlaceGoogleMaps?.text = actor?.birthPlaceGoogleMaps
-
-
+        profileImageView = findViewById(R.id.actorProfileImageView)
+        val actorBase64ImageString =  actor?.image
+        val decodedStringBytes = Base64.decode(actorBase64ImageString, Base64.DEFAULT)
+        val bitmapOfImage = BitmapFactory.decodeByteArray(decodedStringBytes, 0, decodedStringBytes.size)
+        profileImageView?.setImageBitmap(bitmapOfImage)
 
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
