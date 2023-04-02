@@ -34,6 +34,8 @@ class ScrollItemView @JvmOverloads constructor(contextOfTypeContext: Context, at
         super.onAttachedToWindow()
         actorEditIcon?.setOnClickListener {
             val intent = Intent(context, EditActorActivity::class.java)
+            val actorToEdit = MyClass.actors.find{it.name == actorName?.text}
+            intent.putExtra("actor", actorToEdit)
             context.startActivity(intent)
         }
     }
