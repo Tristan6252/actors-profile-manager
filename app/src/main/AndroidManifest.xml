@@ -20,9 +20,21 @@
         android:theme="@style/Theme.ActorsProfileManager"
         tools:targetApi="31">
         <activity
+            android:name=".ui.homepage.view.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
             android:name=".ui.homepage.view.EditActorActivity"
             android:exported="false"
-            android:parentActivityName=".ui.homepage.view.HomePageActivity"/>
+            android:parentActivityName=".ui.homepage.view.HomePageActivity" />
         <activity
             android:name=".ui.addactor.view.AddActorActivity"
             android:exported="false"
@@ -39,11 +51,11 @@
         <activity
             android:name=".ui.homepage.view.HomePageActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.register.view.RegisterActivity"
