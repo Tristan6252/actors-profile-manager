@@ -70,4 +70,24 @@ class dbmanager {
 
 
     }
+
+    fun updateIndividualActor(newActor: Actor, actorName: String) {
+        val userQuery = database.child("actors").orderByChild("name").equalTo(actorName)
+
+        userQuery.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(actorSnapshot in snapshot.children) {
+                    val thisActor = actorSnapshot.getValue(Actor::class.java)
+                    if(thisActor != null && thisActor.name == actorName) {
+                        val userRef = actorSnapshot.key?.let { database.child("actors").child(it).setValue(newActor) }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
 }

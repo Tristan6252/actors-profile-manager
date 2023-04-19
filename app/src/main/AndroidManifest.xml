@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,9 +20,25 @@
         android:theme="@style/Theme.ActorsProfileManager"
         tools:targetApi="31">
         <activity
+            android:name=".ui.homepage.view.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".ui.homepage.view.EditActorActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.homepage.view.HomePageActivity" />
+        <activity
             android:name=".ui.addactor.view.AddActorActivity"
             android:exported="false"
-            android:parentActivityName=".ui.homepage.view.HomePageActivity"/>
+            android:parentActivityName=".ui.homepage.view.HomePageActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -35,11 +51,11 @@
         <activity
             android:name=".ui.homepage.view.HomePageActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.register.view.RegisterActivity"
